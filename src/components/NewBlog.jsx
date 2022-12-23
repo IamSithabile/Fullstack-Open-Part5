@@ -39,6 +39,7 @@ const NewBlog = ({ addBlog }) => {
 
   return (
     <>
+      <h2>Create new</h2>
       <form onSubmit={formSubmitHandler}>
         <label>
           Title :
