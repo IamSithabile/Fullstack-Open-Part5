@@ -2,6 +2,10 @@ import React, { useState, forwardRef, useImperativeHandle } from "react";
 
 const Toggable = forwardRef((props, refs) => {
   const [visible, setVisible] = useState("");
+
+  const showWhenVisible = visible ? "" : "none";
+  const hideWhenVisible = visible ? "none" : "";
+
   const { label } = props;
 
   const toggleVisible = () => {
@@ -11,9 +15,6 @@ const Toggable = forwardRef((props, refs) => {
   useImperativeHandle(refs, () => {
     return { toggleVisible };
   });
-
-  const showWhenVisible = visible ? "" : "none";
-  const hideWhenVisible = visible ? "none" : "";
 
   return (
     <>

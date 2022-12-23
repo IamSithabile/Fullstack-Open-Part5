@@ -40,6 +40,7 @@ const App = () => {
 
     setUsername(value);
   };
+
   const passwordHandler = (e) => {
     const {
       target: { value },
@@ -70,6 +71,11 @@ const App = () => {
     }
   };
 
+  const logoutHandler = () => {
+    window.localStorage.removeItem("loggedInUser");
+    setUser(null);
+  };
+
   const formHandler = async (e) => {
     e.preventDefault();
 
@@ -94,11 +100,6 @@ const App = () => {
         info: "Wrong username or password",
       });
     }
-  };
-
-  const logoutHandler = () => {
-    window.localStorage.removeItem("loggedInUser");
-    setUser(null);
   };
 
   if (user === null) {
