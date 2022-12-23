@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import NewBlog from "./components/NewBlog";
+import Notification from "./components/Notification";
 
-import { getAll } from "./services/blogs";
+import { getAll, create } from "./services/blogs";
 import login from "./services/login";
 
 const App = () => {
@@ -11,6 +12,9 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+  const [message, setMessage] = useState("");
+
+  const { info, className } = message;
 
   useEffect(() => {
     getAll().then((blogs) => setBlogs(blogs));
@@ -40,19 +44,50 @@ const App = () => {
     setPassword(value);
   };
 
+  const displayMessage = (message) => {
+    const { info, className } = message;
+    setMessage({ info: info, className: className ? className : "success" });
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
+  };
+
+  const addBlog = async (newBlog) => {
+    try {
+      const returnedBlog = await create(newBlog, user.token);
+      displayMessage({
+        info: `A new blog ${returnedBlog.title} by ${returnedBlog.author} has been added`,
+      });
+
+      setBlogs([...blogs, returnedBlog]);
+    } catch (error) {
+      displayMessage({ className: "error", info: error.message });
+    }
+  };
+
   const formHandler = async (e) => {
     e.preventDefault();
 
     const username = e.target.username.value;
     const password = e.target.password.value;
 
-    const loginUser = await login({ username, password });
-    if (loginUser.token) {
-      window.localStorage.setItem("loggedInUser", JSON.stringify(loginUser));
-      setUser(loginUser);
+    try {
+      const loginUser = await login({ username, password });
+      if (loginUser.token) {
+        window.localStorage.setItem("loggedInUser", JSON.stringify(loginUser));
+        setUser(loginUser);
 
-      setUsername("");
-      setPassword("");
+        setUsername("");
+        setPassword("");
+
+        displayMessage({ info: "Successfully logged in" });
+      }
+    } catch (error) {
+      console.log("failure to log in because :->", error);
+      displayMessage({
+        className: "error",
+        info: "Wrong username or password",
+      });
     }
   };
 
@@ -64,6 +99,7 @@ const App = () => {
   if (user === null) {
     return (
       <div>
+        {message && <Notification {...{ info, className }} />}
         <h2>Log in to application</h2>
         <LoginForm
           {...{
@@ -80,6 +116,7 @@ const App = () => {
 
   return (
     <div>
+      {message && <Notification {...{ info, className }} />}
       <h2>User</h2>
       <div>
         <p>{user.username} logged in</p>
@@ -87,7 +124,7 @@ const App = () => {
       </div>
 
       <h2>Create new</h2>
-      <NewBlog token={user.token} />
+      <NewBlog {...{ addBlog }} />
       <h2>blogs</h2>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />

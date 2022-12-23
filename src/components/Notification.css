@@ -1,0 +1,21 @@
+.error {
+  background-color: rgba(255, 77, 77, 0.644);
+  padding: 0.5rem;
+  font-weight: 400;
+  border: solid 2px red;
+  border-radius: 1rem;
+  max-width: 50vw;
+  text-align: center;
+  margin: 0 auto;
+}
+.success {
+  background-color: rgba(135, 212, 20, 0.575);
+  padding: 0.5rem;
+  color: darkslategray;
+  font-weight: 400;
+  border: solid 2px greenyellow;
+  border-radius: 1rem;
+  max-width: 50vw;
+  text-align: center;
+  margin: 0 auto;
+}

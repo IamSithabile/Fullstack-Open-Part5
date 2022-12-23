@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 
-import { create } from "../services/blogs";
-
-const NewBlog = ({ token }) => {
+const NewBlog = ({ addBlog }) => {
   const [author, setAuthor] = useState("");
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
@@ -28,12 +26,11 @@ const NewBlog = ({ token }) => {
     setUrl(value);
   };
 
-  const formSubmitHandler = async (e) => {
+  const formSubmitHandler = (e) => {
     e.preventDefault();
 
     const blog = { ...{ title, author, url } };
-    const request = await create(blog, token);
-    console.log(request);
+    addBlog(blog);
 
     setAuthor("");
     setTitle("");
