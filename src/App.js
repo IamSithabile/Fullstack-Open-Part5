@@ -20,8 +20,25 @@ const App = () => {
 
   const blogFormRef = useRef();
 
+  const sortByLikes = (a, b) => {
+    if (a.likes > b.likes) {
+      return -1;
+    } else if (a.likes > b.likes) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
+
   useEffect(() => {
-    getAll().then((blogs) => setBlogs(blogs));
+    const getBlogs = async () => {
+      const returnedBlogs = await getAll();
+
+      const sortedBlogs = [...returnedBlogs];
+      sortedBlogs.sort(sortByLikes);
+      setBlogs(sortedBlogs);
+    };
+    getBlogs();
   }, []);
 
   useEffect(() => {
@@ -87,13 +104,16 @@ const App = () => {
       console.log("returnedBlog ==>", returnedBlog);
 
       displayMessage({ info: `blog ${title} updated!` });
-      setBlogs(
-        blogs.map((blog) =>
-          blog.id === returnedBlog.id
-            ? { ...blog, likes: blog.likes + 1 }
-            : blog
-        )
+
+      const updatedBlogs = blogs.map((blog) =>
+        blog.id === returnedBlog.id ? { ...blog, likes: blog.likes + 1 } : blog
       );
+
+      const sortedBlogs = [...updatedBlogs];
+      sortedBlogs.sort(sortByLikes);
+      setBlogs(sortedBlogs);
+
+      setBlogs(sortedBlogs);
     } catch (error) {
       displayMessage({ className: "error", info: error.message });
     }
