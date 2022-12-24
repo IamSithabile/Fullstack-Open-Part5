@@ -6,7 +6,7 @@ import NewBlog from "./components/NewBlog";
 import Notification from "./components/Notification";
 import Toggable from "./components/Toggable";
 
-import { getAll, create, update } from "./services/blogs";
+import { getAll, create, update, remove } from "./services/blogs";
 import login from "./services/login";
 
 const App = () => {
@@ -119,6 +119,20 @@ const App = () => {
     }
   };
 
+  const removeBlog = async ({ id, author, title }) => {
+    const shouldRemove = window.confirm(`Remove ${title} by ${author} >?`);
+
+    if (shouldRemove) {
+      try {
+        await remove(id, user.token);
+        displayMessage({ info: `${title} by ${author} removed!` });
+        setBlogs(blogs.filter((blog) => blog.id !== id));
+      } catch (error) {
+        displayMessage({ className: "error", info: "Failure deleting blog" });
+      }
+    }
+  };
+
   const logoutHandler = () => {
     window.localStorage.removeItem("loggedInUser");
     setUser(null);
@@ -189,7 +203,11 @@ const App = () => {
       <div>
         <h2>blogs</h2>
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} {...{ updateBlog }} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            {...{ updateBlog, removeBlog, user }}
+          />
         ))}
       </div>
     </div>

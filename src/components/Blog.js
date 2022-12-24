@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, removeBlog, user }) => {
   const { id, title, url, author, likes } = blog;
 
   const [show, setShow] = useState(false);
@@ -44,6 +44,16 @@ const Blog = ({ blog, updateBlog }) => {
           </button>
         </p>
         <p>{author}</p>
+        {blog.user.username === user.username && (
+          <button
+            style={{ backgroundColor: "red", color: "white" }}
+            onClick={() => {
+              removeBlog(blog);
+            }}
+          >
+            Remove
+          </button>
+        )}
       </div>
       <button
         onClick={() => {
