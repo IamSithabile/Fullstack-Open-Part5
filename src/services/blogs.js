@@ -11,3 +11,8 @@ export const create = async (blogObject, token) => {
   const request = await axios.post(baseUrl, blogObject, config);
   return request.data;
 };
+
+export const update = async (id, updateBlog) => {
+  const request = await axios.put(`${baseUrl}/${id}`, updateBlog);
+  return request.data;
+};
