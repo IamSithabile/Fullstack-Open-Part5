@@ -6,7 +6,7 @@ import NewBlog from "./components/NewBlog";
 import Notification from "./components/Notification";
 import Toggable from "./components/Toggable";
 
-import { getAll, create } from "./services/blogs";
+import { getAll, create, update } from "./services/blogs";
 import login from "./services/login";
 
 const App = () => {
@@ -66,6 +66,34 @@ const App = () => {
       });
 
       setBlogs([...blogs, returnedBlog]);
+    } catch (error) {
+      displayMessage({ className: "error", info: error.message });
+    }
+  };
+
+  const updateBlog = async (id, blogToUpdate) => {
+    let { title, url, author, likes } = blogToUpdate;
+
+    const updating = {
+      title,
+      url,
+      author,
+      likes: likes + 1,
+    };
+
+    try {
+      const returnedBlog = await update(id, updating);
+
+      console.log("returnedBlog ==>", returnedBlog);
+
+      displayMessage({ info: `blog ${title} updated!` });
+      setBlogs(
+        blogs.map((blog) =>
+          blog.id === returnedBlog.id
+            ? { ...blog, likes: blog.likes + 1 }
+            : blog
+        )
+      );
     } catch (error) {
       displayMessage({ className: "error", info: error.message });
     }
@@ -141,7 +169,7 @@ const App = () => {
       <div>
         <h2>blogs</h2>
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} {...{ updateBlog }} />
         ))}
       </div>
     </div>
