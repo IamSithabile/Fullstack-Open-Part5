@@ -1,40 +1,48 @@
-import React from "react";
-import "@testing-library/jest-dom/extend-expect";
-import { render, screen } from "@testing-library/react";
-import Blog from "./Blog";
+import React from 'react'
+import '@testing-library/jest-dom/extend-expect'
+import { render, screen } from '@testing-library/react'
+import Blog from './Blog'
+import userEvent from '@testing-library/user-event'
 
-test("that Blog renders title and author", () => {
+test('that Blog renders title and author', () => {
   const blog = {
-    author: "Zwai",
-    title: "How to masterfully be a master",
-    url: "www.beamaster.com",
+    author: 'Zwai',
+    title: 'How to masterfully be a master',
+    url: 'www.beamaster.com',
     likes: 563,
-  };
+  }
 
-  render(<Blog {...{ blog }} />);
+  render(<Blog {...{ blog }} />)
 
-  const titleElement = screen.getByText("How to masterfully be a master");
-  const authorElement = screen.getByText("Zwai");
-  const urlElement = screen.queryByText("www.beamaster.com");
+  const titleElement = screen.getByText('How to masterfully be a master')
+  const authorElement = screen.getByText('Zwai')
+  const urlElement = screen.queryByText('www.beamaster.com')
 
-  expect(titleElement).toHaveTextContent("How to masterfully be a master", {
-    exact: false,
-  });
-  expect(authorElement).toHaveTextContent("Zwai");
-  expect(urlElement).toBeNull();
-});
+  expect(titleElement).toHaveTextContent('How to masterfully be a master')
+  expect(authorElement).toHaveTextContent('Zwai')
+  expect(urlElement).toBeNull()
+})
 
-test("that Blog renders title and author", () => {
+test('that Blog renders url and likes when button clicked', async () => {
   const blog = {
-    author: "Zwai",
-    title: "How to masterfully be a master",
-    url: "www.beamaster.com",
+    author: 'Zwai',
+    title: 'How to masterfully be a master',
+    url: 'www.beamaster.com',
     likes: 563,
-  };
+    user: { username: 'root' },
+  }
+  const user = { username: 'root' }
 
-  render(<Blog {...{ blog }} />);
+  const simUser = userEvent.setup()
 
-  const element = screen.getByText("How to masterfully be a master");
+  render(<Blog {...{ blog, user }} />)
 
-  expect(element).toBeDefined();
-});
+  const buttonElement = screen.getByRole('button', { name: /view/i })
+  await simUser.click(buttonElement)
+
+  const urlElement = screen.queryByText('www.beamaster.com')
+  const likesElement = screen.queryByText(563)
+
+  expect(urlElement).toHaveTextContent('www.beamaster.com')
+  expect(likesElement).toHaveTextContent(563)
+})
