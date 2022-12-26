@@ -46,3 +46,30 @@ test('that Blog renders url and likes when button clicked', async () => {
   expect(urlElement).toHaveTextContent('www.beamaster.com')
   expect(likesElement).toHaveTextContent(563)
 })
+
+test('that likehandler called twice if button clicked twice', async () => {
+  const blog = {
+    author: 'Zwai',
+    title: 'How to masterfully be a master',
+    url: 'www.beamaster.com',
+    likes: 563,
+    user: { username: 'root' },
+  }
+  const user = { username: 'root' }
+
+  const simUser = userEvent.setup()
+
+  const updateBlog = jest.fn()
+
+  render(<Blog {...{ blog, user, updateBlog }} />)
+
+  const buttonElement = screen.getByRole('button', { name: /view/i })
+  await simUser.click(buttonElement)
+
+  const likeElement = screen.getByRole('button', { name: /like/i })
+
+  await simUser.click(likeElement)
+  await simUser.click(likeElement)
+
+  expect(updateBlog.mock.calls).toHaveLength(2)
+})
