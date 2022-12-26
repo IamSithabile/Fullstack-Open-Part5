@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
 const Blog = ({ blog, updateBlog, removeBlog, user }) => {
-  const { id, title, url, author, likes } = blog;
+  const { id, title, url, author, likes } = blog
 
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false)
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  };
+  }
 
   if (!show) {
     return (
@@ -20,13 +20,13 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
         <p>{author}</p>
         <button
           onClick={() => {
-            setShow(true);
+            setShow(true)
           }}
         >
           View
         </button>
       </div>
-    );
+    )
   }
   return (
     <>
@@ -37,7 +37,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
           {likes}
           <button
             onClick={() => {
-              updateBlog(id, blog);
+              updateBlog(id, blog)
             }}
           >
             like
@@ -46,9 +46,9 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
         <p>{author}</p>
         {blog.user.username === user.username && (
           <button
-            style={{ backgroundColor: "red", color: "white" }}
+            style={{ backgroundColor: 'red', color: 'white' }}
             onClick={() => {
-              removeBlog(blog);
+              removeBlog(blog)
             }}
           >
             Remove
@@ -57,13 +57,13 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
       </div>
       <button
         onClick={() => {
-          setShow(false);
+          setShow(false)
         }}
       >
         Hide
       </button>
     </>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog

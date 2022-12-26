@@ -1,168 +1,168 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react'
 
-import Blog from "./components/Blog";
-import LoginForm from "./components/LoginForm";
-import NewBlog from "./components/NewBlog";
-import Notification from "./components/Notification";
-import Toggable from "./components/Toggable";
+import Blog from './components/Blog'
+import LoginForm from './components/LoginForm'
+import NewBlog from './components/NewBlog'
+import Notification from './components/Notification'
+import Toggable from './components/Toggable'
 
-import { getAll, create, update, remove } from "./services/blogs";
-import login from "./services/login";
+import { getAll, create, update, remove } from './services/blogs'
+import login from './services/login'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
-  const [message, setMessage] = useState("");
+  const [blogs, setBlogs] = useState([])
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
+  const [message, setMessage] = useState('')
 
-  const { info, className } = message;
+  const { info, className } = message
 
-  const blogFormRef = useRef();
+  const blogFormRef = useRef()
 
   const sortByLikes = (a, b) => {
     if (a.likes > b.likes) {
-      return -1;
+      return -1
     } else if (a.likes < b.likes) {
-      return 1;
+      return 1
     } else {
-      return 0;
+      return 0
     }
-  };
+  }
 
   useEffect(() => {
     const getBlogs = async () => {
-      const returnedBlogs = await getAll();
+      const returnedBlogs = await getAll()
 
-      const sortedBlogs = [...returnedBlogs];
-      sortedBlogs.sort(sortByLikes);
-      setBlogs(sortedBlogs);
-    };
-    getBlogs();
-  }, []);
+      const sortedBlogs = [...returnedBlogs]
+      sortedBlogs.sort(sortByLikes)
+      setBlogs(sortedBlogs)
+    }
+    getBlogs()
+  }, [])
 
   useEffect(() => {
-    const loggedInUserJSON = window.localStorage.getItem("loggedInUser");
+    const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
 
     if (loggedInUserJSON) {
-      const user = JSON.parse(loggedInUserJSON);
-      setUser(user);
+      const user = JSON.parse(loggedInUserJSON)
+      setUser(user)
     }
-  }, []);
+  }, [])
 
-  const usernameHandler = (e) => {
+  const usernameHandler = e => {
     const {
       target: { value },
-    } = e;
+    } = e
 
-    setUsername(value);
-  };
+    setUsername(value)
+  }
 
-  const passwordHandler = (e) => {
+  const passwordHandler = e => {
     const {
       target: { value },
-    } = e;
+    } = e
 
-    setPassword(value);
-  };
+    setPassword(value)
+  }
 
-  const displayMessage = (message) => {
-    const { info, className } = message;
-    setMessage({ info: info, className: className ? className : "success" });
+  const displayMessage = message => {
+    const { info, className } = message
+    setMessage({ info: info, className: className ? className : 'success' })
     setTimeout(() => {
-      setMessage("");
-    }, 3000);
-  };
+      setMessage('')
+    }, 3000)
+  }
 
-  const addBlog = async (newBlog) => {
+  const addBlog = async newBlog => {
     try {
-      const returnedBlog = await create(newBlog, user.token);
-      blogFormRef.current.toggleVisible();
+      const returnedBlog = await create(newBlog, user.token)
+      blogFormRef.current.toggleVisible()
       displayMessage({
         info: `A new blog ${returnedBlog.title} by ${returnedBlog.author} has been added`,
-      });
+      })
 
-      setBlogs([...blogs, returnedBlog]);
+      setBlogs([...blogs, returnedBlog])
     } catch (error) {
-      displayMessage({ className: "error", info: error.message });
+      displayMessage({ className: 'error', info: error.message })
     }
-  };
+  }
 
   const updateBlog = async (id, blogToUpdate) => {
-    let { title, url, author, likes } = blogToUpdate;
+    let { title, url, author, likes } = blogToUpdate
 
     const updating = {
       title,
       url,
       author,
       likes: likes + 1,
-    };
+    }
 
     try {
-      const returnedBlog = await update(id, updating);
+      const returnedBlog = await update(id, updating)
 
-      console.log("returnedBlog ==>", returnedBlog);
+      console.log('returnedBlog ==>', returnedBlog)
 
-      displayMessage({ info: `blog ${title} updated!` });
+      displayMessage({ info: `blog ${title} updated!` })
 
-      const updatedBlogs = blogs.map((blog) =>
+      const updatedBlogs = blogs.map(blog =>
         blog.id === returnedBlog.id ? { ...blog, likes: blog.likes + 1 } : blog
-      );
+      )
 
-      const sortedBlogs = [...updatedBlogs];
-      sortedBlogs.sort(sortByLikes);
-      setBlogs(sortedBlogs);
+      const sortedBlogs = [...updatedBlogs]
+      sortedBlogs.sort(sortByLikes)
+      setBlogs(sortedBlogs)
 
-      setBlogs(sortedBlogs);
+      setBlogs(sortedBlogs)
     } catch (error) {
-      displayMessage({ className: "error", info: error.message });
+      displayMessage({ className: 'error', info: error.message })
     }
-  };
+  }
 
   const removeBlog = async ({ id, author, title }) => {
-    const shouldRemove = window.confirm(`Remove ${title} by ${author} >?`);
+    const shouldRemove = window.confirm(`Remove ${title} by ${author} >?`)
 
     if (shouldRemove) {
       try {
-        await remove(id, user.token);
-        displayMessage({ info: `${title} by ${author} removed!` });
-        setBlogs(blogs.filter((blog) => blog.id !== id));
+        await remove(id, user.token)
+        displayMessage({ info: `${title} by ${author} removed!` })
+        setBlogs(blogs.filter(blog => blog.id !== id))
       } catch (error) {
-        displayMessage({ className: "error", info: "Failure deleting blog" });
+        displayMessage({ className: 'error', info: 'Failure deleting blog' })
       }
     }
-  };
+  }
 
   const logoutHandler = () => {
-    window.localStorage.removeItem("loggedInUser");
-    setUser(null);
-  };
+    window.localStorage.removeItem('loggedInUser')
+    setUser(null)
+  }
 
-  const formHandler = async (e) => {
-    e.preventDefault();
+  const formHandler = async e => {
+    e.preventDefault()
 
-    const username = e.target.username.value;
-    const password = e.target.password.value;
+    const username = e.target.username.value
+    const password = e.target.password.value
 
     try {
-      const loginUser = await login({ username, password });
+      const loginUser = await login({ username, password })
       if (loginUser.token) {
-        window.localStorage.setItem("loggedInUser", JSON.stringify(loginUser));
-        setUser(loginUser);
+        window.localStorage.setItem('loggedInUser', JSON.stringify(loginUser))
+        setUser(loginUser)
 
-        setUsername("");
-        setPassword("");
+        setUsername('')
+        setPassword('')
 
-        displayMessage({ info: "Successfully logged in" });
+        displayMessage({ info: 'Successfully logged in' })
       }
     } catch (error) {
-      console.log("failure to log in because :->", error);
+      console.log('failure to log in because :->', error)
       displayMessage({
-        className: "error",
-        info: "Wrong username or password",
-      });
+        className: 'error',
+        info: 'Wrong username or password',
+      })
     }
-  };
+  }
 
   if (user === null) {
     return (
@@ -181,7 +181,7 @@ const App = () => {
           />
         </Toggable>
       </div>
-    );
+    )
   }
 
   return (
@@ -196,13 +196,16 @@ const App = () => {
         </div>
       )}
       <br />
-      <Toggable label="Create new blog" ref={blogFormRef}>
+      <Toggable
+        label="Create new blog"
+        ref={blogFormRef}
+      >
         <NewBlog {...{ addBlog }} />
       </Toggable>
 
       <div>
         <h2>blogs</h2>
-        {blogs.map((blog) => (
+        {blogs.map(blog => (
           <Blog
             key={blog.id}
             blog={blog}
@@ -211,7 +214,7 @@ const App = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

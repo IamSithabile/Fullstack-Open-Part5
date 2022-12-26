@@ -1,41 +1,41 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
 const NewBlog = ({ addBlog }) => {
-  const [author, setAuthor] = useState("");
-  const [title, setTitle] = useState("");
-  const [url, setUrl] = useState("");
+  const [author, setAuthor] = useState('')
+  const [title, setTitle] = useState('')
+  const [url, setUrl] = useState('')
 
   const authorHandler = (e) => {
     const {
       target: { value },
-    } = e;
-    setAuthor(value);
-  };
+    } = e
+    setAuthor(value)
+  }
 
   const titleHandler = (e) => {
     const {
       target: { value },
-    } = e;
-    setTitle(value);
-  };
+    } = e
+    setTitle(value)
+  }
 
   const urlHandler = (e) => {
     const {
       target: { value },
-    } = e;
-    setUrl(value);
-  };
+    } = e
+    setUrl(value)
+  }
 
   const formSubmitHandler = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const blog = { ...{ title, author, url } };
-    addBlog(blog);
+    const blog = { ...{ title, author, url } }
+    addBlog(blog)
 
-    setAuthor("");
-    setTitle("");
-    setUrl("");
-  };
+    setAuthor('')
+    setTitle('')
+    setUrl('')
+  }
 
   return (
     <>
@@ -66,7 +66,7 @@ const NewBlog = ({ addBlog }) => {
         <button type="submit">Create</button>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default NewBlog;
+export default NewBlog
