@@ -1,8 +1,10 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
-import Blog from './Blog'
 import userEvent from '@testing-library/user-event'
+
+import Blog from './Blog'
+import NewBlog from './NewBlog'
 
 test('that Blog renders title and author', () => {
   const blog = {
@@ -72,4 +74,33 @@ test('that likehandler called twice if button clicked twice', async () => {
   await simUser.click(likeElement)
 
   expect(updateBlog.mock.calls).toHaveLength(2)
+})
+
+test('that form calls addBlog with supplied details', async () => {
+  const addBlog = jest.fn()
+  const user = userEvent.setup()
+
+  const match = {
+    author: 'Kent C. Dodds',
+    title: 'How to use the react testing library',
+    url: 'www.kentcdodds.com',
+  }
+
+  render(<NewBlog {...{ addBlog }} />)
+
+  const titleElement = screen.getByPlaceholderText('Enter the blog title')
+  const authorElement = screen.getByPlaceholderText('Enter the blog author')
+  const urlElement = screen.getByPlaceholderText('Enter the blog url')
+  const buttonElement = screen.getByRole('button', /create/i)
+
+  await user.type(titleElement, 'How to use the react testing library')
+  await user.type(authorElement, 'Kent C. Dodds')
+  await user.type(urlElement, 'www.kentcdodds.com')
+
+  await user.click(buttonElement)
+
+  const returnedMockObject = addBlog.mock.calls[0][0]
+
+  expect(addBlog.mock.calls).toHaveLength(1)
+  expect(returnedMockObject).toStrictEqual(match)
 })

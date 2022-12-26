@@ -5,28 +5,28 @@ const NewBlog = ({ addBlog }) => {
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
 
-  const authorHandler = (e) => {
+  const authorHandler = e => {
     const {
       target: { value },
     } = e
     setAuthor(value)
   }
 
-  const titleHandler = (e) => {
+  const titleHandler = e => {
     const {
       target: { value },
     } = e
     setTitle(value)
   }
 
-  const urlHandler = (e) => {
+  const urlHandler = e => {
     const {
       target: { value },
     } = e
     setUrl(value)
   }
 
-  const formSubmitHandler = (e) => {
+  const formSubmitHandler = e => {
     e.preventDefault()
 
     const blog = { ...{ title, author, url } }
@@ -48,6 +48,7 @@ const NewBlog = ({ addBlog }) => {
             name="title"
             value={title}
             onChange={titleHandler}
+            placeholder="Enter the blog title"
           />
         </label>
         <label>
@@ -57,11 +58,18 @@ const NewBlog = ({ addBlog }) => {
             name="author"
             value={author}
             onChange={authorHandler}
+            placeholder="Enter the blog author"
           />
         </label>
         <label>
           Url :
-          <input type="text" name="url" value={url} onChange={urlHandler} />
+          <input
+            type="text"
+            name="url"
+            value={url}
+            onChange={urlHandler}
+            placeholder="Enter the blog url"
+          />
         </label>
         <button type="submit">Create</button>
       </form>
