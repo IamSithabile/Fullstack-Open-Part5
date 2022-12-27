@@ -15,7 +15,10 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
 
   if (!show) {
     return (
-      <div style={blogStyle}>
+      <div
+        style={blogStyle}
+        className="blogs"
+      >
         <p>{title}</p>
         <p>{author}</p>
         <button
@@ -31,7 +34,10 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
   }
   return (
     <>
-      <div style={blogStyle}>
+      <div
+        style={blogStyle}
+        className="blogs"
+      >
         <p>{title}</p>
         <p>{url}</p>
         <p>

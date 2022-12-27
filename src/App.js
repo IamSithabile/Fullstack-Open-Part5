@@ -208,8 +208,8 @@ const App = () => {
         <NewBlog {...{ addBlog }} />
       </Toggable>
 
+      <h2>blogs</h2>
       <div>
-        <h2>blogs</h2>
         {blogs.map(blog => (
           <Blog
             key={blog.id}
