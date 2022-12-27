@@ -192,7 +192,12 @@ const App = () => {
         <div>
           <h2>User</h2>
           <p>{user.username} logged in</p>
-          <button onClick={logoutHandler}>Logout</button>
+          <button
+            onClick={logoutHandler}
+            id="logout-button"
+          >
+            Logout
+          </button>
         </div>
       )}
       <br />

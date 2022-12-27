@@ -1,13 +1,8 @@
 describe('Blog app', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
-    const user = {
-      name: 'Matti Luukkainen',
-      username: 'mluukkai',
-      password: 'salainen',
-    }
-    cy.request('POST', 'http://localhost:3003/api/users/', user)
-    cy.visit('http://localhost:3000')
+    cy.createUser('Matti Luukkainen', 'mluukkai', 'salainen')
+    cy.createUser('Administrator', 'root', 'Admin')
   })
 
   it('displays login form', function () {
@@ -68,6 +63,34 @@ describe('Blog app', function () {
 
       cy.get('button#like').click()
       cy.contains(1)
+    })
+
+    it('can be deleted', function () {
+      cy.createBlog(
+        'How to magically control browser, using telekenisis',
+        'Or your mind',
+        'www.caniHazTelekenisi.com'
+      )
+
+      cy.get('button#view').click()
+
+      cy.get('button#remove').click()
+      cy.get('#title').should('not.be.visible')
+    })
+    it.only('can be deleted by creator', function () {
+      cy.createBlog(
+        'How to magically control browser, using telekenisis',
+        'Or your mind',
+        'www.caniHazTelekenisi.com'
+      )
+
+      cy.get('button#logout-button').click()
+
+      cy.login('root', 'Admin')
+
+      cy.get('button#view').click()
+
+      cy.get('button#remove').should('not.exist')
     })
   })
 })

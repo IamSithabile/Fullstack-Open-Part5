@@ -52,6 +52,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
             onClick={() => {
               removeBlog(blog)
             }}
+            id="remove"
           >
             Remove
           </button>
