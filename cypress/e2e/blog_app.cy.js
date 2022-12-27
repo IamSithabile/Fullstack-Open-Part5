@@ -18,7 +18,7 @@ describe('Blog app', function () {
     cy.get('button#login-button')
   })
 
-  it.only('succedds with correct information', function () {
+  it('succedds with correct information', function () {
     cy.contains('Login').click()
 
     cy.get('input#username').type('mluukkai')
@@ -28,7 +28,7 @@ describe('Blog app', function () {
     cy.get('.success').should('contain', 'Successfully logged in')
   })
 
-  it.only('fails with incorrect information', function () {
+  it('fails with incorrect information', function () {
     cy.contains('Login').click()
 
     cy.get('input#username').type('mluukkai')
@@ -38,5 +38,25 @@ describe('Blog app', function () {
     cy.get('.error')
       .should('contain', 'Wrong username or password')
       .and('have.css', 'background-color', 'rgba(255, 77, 77, 0.7)')
+  })
+
+  describe('when a user is logged in', function () {
+    beforeEach(function () {
+      cy.login('mluukkai', 'salainen')
+    })
+
+    it.only('a new note can be created', function () {
+      cy.contains('Create new blog').click()
+
+      cy.get('input#title').type(
+        'How to magically control browser, using telekenisis'
+      )
+      cy.get('input#author').type('Or your mind')
+      cy.get('input#url').type('www.caniHazTelekenisi.com')
+      cy.get('button#create-button').click()
+
+      cy.contains('View').click()
+      cy.contains('www.caniHazTelekenisi.com')
+    })
   })
 })

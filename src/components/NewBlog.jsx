@@ -49,6 +49,7 @@ const NewBlog = ({ addBlog }) => {
             value={title}
             onChange={titleHandler}
             placeholder="Enter the blog title"
+            id="title"
           />
         </label>
         <label>
@@ -59,6 +60,7 @@ const NewBlog = ({ addBlog }) => {
             value={author}
             onChange={authorHandler}
             placeholder="Enter the blog author"
+            id="author"
           />
         </label>
         <label>
@@ -69,9 +71,15 @@ const NewBlog = ({ addBlog }) => {
             value={url}
             onChange={urlHandler}
             placeholder="Enter the blog url"
+            id="url"
           />
         </label>
-        <button type="submit">Create</button>
+        <button
+          type="submit"
+          id="create-button"
+        >
+          Create
+        </button>
       </form>
     </>
   )
