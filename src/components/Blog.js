@@ -22,6 +22,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
           onClick={() => {
             setShow(true)
           }}
+          id="view"
         >
           View
         </button>
@@ -39,6 +40,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
             onClick={() => {
               updateBlog(id, blog)
             }}
+            id="like"
           >
             like
           </button>

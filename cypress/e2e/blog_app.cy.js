@@ -45,18 +45,29 @@ describe('Blog app', function () {
       cy.login('mluukkai', 'salainen')
     })
 
-    it.only('a new note can be created', function () {
-      cy.contains('Create new blog').click()
-
-      cy.get('input#title').type(
-        'How to magically control browser, using telekenisis'
+    it('a new note can be created', function () {
+      cy.createBlog(
+        'How to magically control browser, using telekenisis',
+        'Or your mind',
+        'www.caniHazTelekenisi.com'
       )
-      cy.get('input#author').type('Or your mind')
-      cy.get('input#url').type('www.caniHazTelekenisi.com')
-      cy.get('button#create-button').click()
 
-      cy.contains('View').click()
+      cy.get('button#view').click()
       cy.contains('www.caniHazTelekenisi.com')
+    })
+
+    it.only('a new note can be liked', function () {
+      cy.createBlog(
+        'How to magically control browser, using telekenisis',
+        'Or your mind',
+        'www.caniHazTelekenisi.com'
+      )
+
+      cy.get('button#view').click()
+      cy.contains('www.caniHazTelekenisi.com')
+
+      cy.get('button#like').click()
+      cy.contains(1)
     })
   })
 })
