@@ -17,4 +17,26 @@ describe('Blog app', function () {
     cy.get('input#password')
     cy.get('button#login-button')
   })
+
+  it.only('succedds with correct information', function () {
+    cy.contains('Login').click()
+
+    cy.get('input#username').type('mluukkai')
+    cy.get('input#password').type('salainen')
+    cy.get('button#login-button').click()
+
+    cy.get('.success').should('contain', 'Successfully logged in')
+  })
+
+  it.only('fails with incorrect information', function () {
+    cy.contains('Login').click()
+
+    cy.get('input#username').type('mluukkai')
+    cy.get('input#password').type('salaixnen')
+    cy.get('button#login-button').click()
+
+    cy.get('.error')
+      .should('contain', 'Wrong username or password')
+      .and('have.css', 'background-color', 'rgba(255, 77, 77, 0.7)')
+  })
 })

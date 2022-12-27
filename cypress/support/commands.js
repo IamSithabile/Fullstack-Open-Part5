@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -11,6 +12,15 @@
 //
 // -- This is a parent command --
 // Cypress.Commands.add('login', (email, password) => { ... })
+Cypress.Commands.add('login', (username, password) => {
+  cy.request('POST', 'http://localhost:3003/api/login', {
+    username,
+    password,
+  }).then(({ body }) => {
+    localStorage.setItem('loggedInUser', JSON.stringify(body))
+    cy.visit('http://localhost:3000')
+  })
+})
 //
 //
 // -- This is a child command --
