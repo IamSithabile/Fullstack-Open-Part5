@@ -7,6 +7,7 @@ import Toggable from './components/Toggable'
 import { useDispatch, useSelector } from 'react-redux'
 import BlogList from './components/BlogList'
 import { logoutUser } from './reducers/userReducer'
+import UsersInfo from './components/UsersInfo'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -62,6 +63,8 @@ const App = () => {
           </button>
         </div>
       )}
+      <br />
+      <UsersInfo />
       <br />
       <Toggable
         label="Create new blog"
