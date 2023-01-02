@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
+import { displayNotification } from '../reducers/notificationReducer'
 
-const NewBlog = ({ addBlog }) => {
+import { useDispatch } from 'react-redux'
+
+import { addBlog } from '../reducers/blogsReducer'
+
+const NewBlog = () => {
+  const dispatch = useDispatch()
+
   const [author, setAuthor] = useState('')
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
@@ -30,7 +37,13 @@ const NewBlog = ({ addBlog }) => {
     e.preventDefault()
 
     const blog = { ...{ title, author, url } }
-    addBlog(blog)
+    dispatch(addBlog(blog))
+
+    dispatch(
+      displayNotification({
+        info: `A new blog ${title} by ${author} has been added`,
+      })
+    )
 
     setAuthor('')
     setTitle('')
