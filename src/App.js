@@ -120,7 +120,9 @@ const App = () => {
   }
 
   const removeBlog = async ({ id, author, title }) => {
-    const shouldRemove = window.confirm(`Remove ${title} by ${author} >?`)
+    const shouldRemove = window.confirm(
+      `Remove the blog titled  ${title} by ${author} >?`
+    )
 
     if (shouldRemove) {
       try {
