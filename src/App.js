@@ -9,7 +9,12 @@ import Toggable from './components/Toggable'
 import { getAll, create, update, remove } from './services/blogs'
 import login from './services/login'
 
+import { useDispatch } from 'react-redux'
+import { displayNotification } from './reducers/notificationReducer'
+
 const App = () => {
+  const dispatch = useDispatch()
+
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -66,25 +71,19 @@ const App = () => {
     setPassword(value)
   }
 
-  const displayMessage = message => {
-    const { info, className } = message
-    setMessage({ info: info, className: className ? className : 'success' })
-    setTimeout(() => {
-      setMessage('')
-    }, 3000)
-  }
-
   const addBlog = async newBlog => {
     try {
       const returnedBlog = await create(newBlog, user.token)
       blogFormRef.current.toggleVisible()
-      displayMessage({
-        info: `A new blog ${returnedBlog.title} by ${returnedBlog.author} has been added`,
-      })
+      dispatch(
+        displayNotification({
+          info: `A new blog ${returnedBlog.title} by ${returnedBlog.author} has been added`,
+        })
+      )
 
       setBlogs([...blogs, returnedBlog])
     } catch (error) {
-      displayMessage({ className: 'error', info: error.message })
+      dispatch(displayNotification({ className: 'error', info: error.message }))
     }
   }
 
@@ -101,9 +100,9 @@ const App = () => {
     try {
       const returnedBlog = await update(id, updating)
 
-      console.log('returnedBlog ==>', returnedBlog)
+      // console.log('returnedBlog ==>', returnedBlog)
 
-      displayMessage({ info: `blog ${title} updated!` })
+      dispatch(displayNotification({ info: `blog ${title} updated!` }))
 
       const updatedBlogs = blogs.map(blog =>
         blog.id === returnedBlog.id ? { ...blog, likes: blog.likes + 1 } : blog
@@ -115,7 +114,7 @@ const App = () => {
 
       setBlogs(sortedBlogs)
     } catch (error) {
-      displayMessage({ className: 'error', info: error.message })
+      dispatch(displayNotification({ className: 'error', info: error.message }))
     }
   }
 
@@ -127,10 +126,17 @@ const App = () => {
     if (shouldRemove) {
       try {
         await remove(id, user.token)
-        displayMessage({ info: `${title} by ${author} removed!` })
+        dispatch(
+          displayNotification({ info: `${title} by ${author} removed!` })
+        )
         setBlogs(blogs.filter(blog => blog.id !== id))
       } catch (error) {
-        displayMessage({ className: 'error', info: 'Failure deleting blog' })
+        dispatch(
+          displayNotification({
+            className: 'error',
+            info: 'Failure deleting blog',
+          })
+        )
       }
     }
   }
@@ -155,11 +161,11 @@ const App = () => {
         setUsername('')
         setPassword('')
 
-        displayMessage({ info: 'Successfully logged in' })
+        dispatch(displayNotification({ info: 'Successfully logged in' }))
       }
     } catch (error) {
       console.log('failure to log in because :->', error)
-      displayMessage({
+      displayNotification({
         className: 'error',
         info: 'Wrong username or password',
       })
@@ -169,7 +175,7 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        {message && <Notification {...{ info, className }} />}
+        <Notification />
         <h2>Log in to application</h2>
         <Toggable label="Login">
           <LoginForm
@@ -188,7 +194,7 @@ const App = () => {
 
   return (
     <div>
-      {message && <Notification {...{ info, className }} />}
+      <Notification />
 
       {user && (
         <div>
