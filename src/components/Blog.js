@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
-const Blog = ({ blog, updateBlog, removeBlog }) => {
+import { useDispatch } from 'react-redux'
+
+import { updateBlog, removeBlog } from '../reducers/blogsReducer'
+
+const Blog = ({ blog }) => {
+  const dispatch = useDispatch()
+
   const [user, setUser] = useState()
   useEffect(() => {
     const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
@@ -10,9 +16,20 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
       setUser(user)
     }
   }, [])
+
   const { id, title, url, author, likes } = blog
 
   const [show, setShow] = useState(false)
+
+  const removeHandler = async ({ id, author, title }) => {
+    const shouldRemove = window.confirm(
+      `Remove the blog titled  ${title} by ${author} >?`
+    )
+
+    if (shouldRemove) {
+      dispatch(removeBlog(id, author, title))
+    }
+  }
 
   const blogStyle = {
     paddingTop: 10,
@@ -53,7 +70,7 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
           {likes}
           <button
             onClick={() => {
-              updateBlog(id, blog)
+              dispatch(updateBlog(id, blog))
             }}
             id="like"
           >
@@ -65,7 +82,7 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
           <button
             style={{ backgroundColor: 'red', color: 'white' }}
             onClick={() => {
-              removeBlog(blog)
+              removeHandler(blog)
             }}
             id="remove"
           >

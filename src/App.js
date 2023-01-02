@@ -1,160 +1,37 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import LoginForm from './components/LoginForm'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import Toggable from './components/Toggable'
 
-import { create, update, remove } from './services/blogs'
-import login from './services/login'
-
-import { useDispatch } from 'react-redux'
-import { displayNotification } from './reducers/notificationReducer'
+import { useDispatch, useSelector } from 'react-redux'
 import BlogList from './components/BlogList'
+import { logoutUser } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
-
-  const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-
-  const blogFormRef = useRef()
+  const reduxUser = useSelector(state => state.user)
 
   useEffect(() => {
-    const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
-
-    if (loggedInUserJSON) {
-      const user = JSON.parse(loggedInUserJSON)
-      setUser(user)
+    const exists = JSON.parse(window.localStorage.getItem('loggedInUser'))
+    if (exists) {
+      setUser(exists)
     }
   }, [])
 
-  const usernameHandler = e => {
-    const {
-      target: { value },
-    } = e
-
-    setUsername(value)
-  }
-
-  const passwordHandler = e => {
-    const {
-      target: { value },
-    } = e
-
-    setPassword(value)
-  }
-
-  const sortByLikes = (a, b) => {
-    if (a.likes > b.likes) {
-      return -1
-    } else if (a.likes < b.likes) {
-      return 1
-    } else {
-      return 0
+  useEffect(() => {
+    if (reduxUser) {
+      setUser(reduxUser)
     }
-  }
+  }, [reduxUser])
 
-  const addBlog = async newBlog => {
-    try {
-      const returnedBlog = await create(newBlog, user.token)
-      blogFormRef.current.toggleVisible()
-      dispatch(
-        displayNotification({
-          info: `A new blog ${returnedBlog.title} by ${returnedBlog.author} has been added`,
-        })
-      )
-
-      setBlogs([...blogs, returnedBlog]) // this mut be store in the redux store abd this entire function must therefore existin within the component that craetes it
-    } catch (error) {
-      dispatch(displayNotification({ className: 'error', info: error.message }))
-    }
-  }
-
-  const updateBlog = async (id, blogToUpdate) => {
-    let { title, url, author, likes } = blogToUpdate
-
-    const updating = {
-      title,
-      url,
-      author,
-      likes: likes + 1,
-    }
-
-    try {
-      const returnedBlog = await update(id, updating)
-
-      // console.log('returnedBlog ==>', returnedBlog)
-
-      dispatch(displayNotification({ info: `blog ${title} updated!` }))
-
-      const updatedBlogs = blogs.map(blog =>
-        blog.id === returnedBlog.id ? { ...blog, likes: blog.likes + 1 } : blog
-      )
-
-      const sortedBlogs = [...updatedBlogs]
-      sortedBlogs.sort(sortByLikes)
-      setBlogs(sortedBlogs)
-
-      setBlogs(sortedBlogs)
-    } catch (error) {
-      dispatch(displayNotification({ className: 'error', info: error.message }))
-    }
-  }
-
-  const removeBlog = async ({ id, author, title }) => {
-    const shouldRemove = window.confirm(
-      `Remove the blog titled  ${title} by ${author} >?`
-    )
-
-    if (shouldRemove) {
-      try {
-        await remove(id, user.token)
-        dispatch(
-          displayNotification({ info: `${title} by ${author} removed!` })
-        )
-        setBlogs(blogs.filter(blog => blog.id !== id))
-      } catch (error) {
-        dispatch(
-          displayNotification({
-            className: 'error',
-            info: 'Failure deleting blog',
-          })
-        )
-      }
-    }
-  }
+  const blogFormRef = useRef()
 
   const logoutHandler = () => {
     window.localStorage.removeItem('loggedInUser')
     setUser(null)
-  }
-
-  const formHandler = async e => {
-    e.preventDefault()
-
-    const username = e.target.username.value
-    const password = e.target.password.value
-
-    try {
-      const loginUser = await login({ username, password })
-      if (loginUser.token) {
-        window.localStorage.setItem('loggedInUser', JSON.stringify(loginUser))
-        setUser(loginUser)
-
-        setUsername('')
-        setPassword('')
-
-        dispatch(displayNotification({ info: 'Successfully logged in' }))
-      }
-    } catch (error) {
-      console.log('failure to log in because :->', error)
-      displayNotification({
-        className: 'error',
-        info: 'Wrong username or password',
-      })
-    }
+    dispatch(logoutUser())
   }
 
   if (user === null) {
@@ -163,15 +40,7 @@ const App = () => {
         <Notification />
         <h2>Log in to application</h2>
         <Toggable label="Login">
-          <LoginForm
-            {...{
-              formHandler,
-              username,
-              usernameHandler,
-              password,
-              passwordHandler,
-            }}
-          />
+          <LoginForm />
         </Toggable>
       </div>
     )
@@ -198,7 +67,7 @@ const App = () => {
         label="Create new blog"
         ref={blogFormRef}
       >
-        <NewBlog {...{ addBlog }} />
+        <NewBlog />
       </Toggable>
 
       <h2>blogs</h2>
