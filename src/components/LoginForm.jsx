@@ -19,7 +19,7 @@ const LoginForm = () => {
     setPassword(e.target.value)
   }
 
-  const formHandler = e => {
+  const formHandler = async e => {
     e.preventDefault()
 
     const userDetails = { username, password }

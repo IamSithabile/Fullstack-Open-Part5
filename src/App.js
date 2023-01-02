@@ -1,81 +1,36 @@
-import { useEffect, useRef, useState } from 'react'
-import LoginForm from './components/LoginForm'
-import NewBlog from './components/NewBlog'
-import Notification from './components/Notification'
-import Toggable from './components/Toggable'
+import { Link, Routes, Route, Navigate, useMatch } from 'react-router'
 
-import { useDispatch, useSelector } from 'react-redux'
-import BlogList from './components/BlogList'
-import { logoutUser } from './reducers/userReducer'
-import UsersInfo from './components/UsersInfo'
+import Login from './components/Login'
+import Homepage from './components/Homepage'
+import { useSelector } from 'react-redux'
+import User from './components/User'
 
 const App = () => {
-  const dispatch = useDispatch()
-  const [user, setUser] = useState(null)
   const reduxUser = useSelector(state => state.user)
 
-  useEffect(() => {
-    const exists = JSON.parse(window.localStorage.getItem('loggedInUser'))
-    if (exists) {
-      setUser(exists)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (reduxUser) {
-      setUser(reduxUser)
-    }
-  }, [reduxUser])
-
-  const blogFormRef = useRef()
-
-  const logoutHandler = () => {
-    window.localStorage.removeItem('loggedInUser')
-    setUser(null)
-    dispatch(logoutUser())
-  }
-
-  if (user === null) {
-    return (
-      <div>
-        <Notification />
-        <h2>Log in to application</h2>
-        <Toggable label="Login">
-          <LoginForm />
-        </Toggable>
-      </div>
-    )
-  }
+  const match = useMatch('users/:id')
+  const id = match ? match.params.id : ''
 
   return (
-    <div>
-      <Notification />
-
-      {user && (
-        <div>
-          <h2>User</h2>
-          <p>{user.username} logged in</p>
-          <button
-            onClick={logoutHandler}
-            id="logout-button"
-          >
-            Logout
-          </button>
-        </div>
-      )}
-      <br />
-      <UsersInfo />
-      <br />
-      <Toggable
-        label="Create new blog"
-        ref={blogFormRef}
-      >
-        <NewBlog />
-      </Toggable>
-
-      <h2>blogs</h2>
-      <BlogList />
-    </div>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Navigate
+            replace
+            to={'/users'}
+          />
+        }
+      />
+      <Route
+        path="/users"
+        element={reduxUser ? <Homepage /> : <Login />}
+      />
+      <Route
+        path="/users/:id"
+        element={<User {...{ id }} />}
+      />
+    </Routes>
   )
 }
 

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import login from '../services/login'
+import { getUser } from '../services/users'
 import { displayNotification } from './notificationReducer'
 
 const userSlice = createSlice({
@@ -13,10 +14,13 @@ const userSlice = createSlice({
       window.localStorage.removeItem('loggedInUser')
       return null
     },
+    mergeUser(state, action) {
+      return action.payload
+    },
   },
 })
 
-export const { setUser, logoutUser } = userSlice.actions
+export const { setUser, logoutUser, mergeUser } = userSlice.actions
 
 export const loginUser = userDetails => {
   return async dispatch => {
@@ -33,6 +37,14 @@ export const loginUser = userDetails => {
         info: 'Wrong username or password',
       })
     }
+  }
+}
+
+export const initializeUser = id => {
+  return async dispatch => {
+    const user = await getUser(id)
+    console.log(user)
+    dispatch(mergeUser(user))
   }
 }
 

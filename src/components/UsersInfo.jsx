@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { getAllUsers } from '../reducers/usersReducer'
 
 const UsersInfo = () => {
@@ -18,7 +19,8 @@ const UsersInfo = () => {
       <ul>
         {users.map(user => (
           <li key={user.id}>
-            {user.username} - {user.blogs.length}
+            <Link to={`/users/${user.id}`}>{user.username}</Link> -{' '}
+            {user.blogs.length}
           </li>
         ))}
       </ul>
