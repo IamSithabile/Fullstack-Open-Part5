@@ -13,6 +13,10 @@ const User = ({ id }) => {
   const user = useSelector(state => state.user)
   console.log('user:', user)
 
+  if (!user) {
+    return null
+  }
+
   return (
     <>
       <h2>{user.username}</h2>
