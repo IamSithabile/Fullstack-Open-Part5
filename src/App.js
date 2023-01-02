@@ -1,16 +1,15 @@
 import { useState, useEffect, useRef } from 'react'
-
-import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import NewBlog from './components/NewBlog'
 import Notification from './components/Notification'
 import Toggable from './components/Toggable'
 
-import { getAll, create, update, remove } from './services/blogs'
+import { create, update, remove } from './services/blogs'
 import login from './services/login'
 
 import { useDispatch } from 'react-redux'
 import { displayNotification } from './reducers/notificationReducer'
+import BlogList from './components/BlogList'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -19,32 +18,8 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState('')
-
-  const { info, className } = message
 
   const blogFormRef = useRef()
-
-  const sortByLikes = (a, b) => {
-    if (a.likes > b.likes) {
-      return -1
-    } else if (a.likes < b.likes) {
-      return 1
-    } else {
-      return 0
-    }
-  }
-
-  useEffect(() => {
-    const getBlogs = async () => {
-      const returnedBlogs = await getAll()
-
-      const sortedBlogs = [...returnedBlogs]
-      sortedBlogs.sort(sortByLikes)
-      setBlogs(sortedBlogs)
-    }
-    getBlogs()
-  }, [])
 
   useEffect(() => {
     const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
@@ -71,6 +46,16 @@ const App = () => {
     setPassword(value)
   }
 
+  const sortByLikes = (a, b) => {
+    if (a.likes > b.likes) {
+      return -1
+    } else if (a.likes < b.likes) {
+      return 1
+    } else {
+      return 0
+    }
+  }
+
   const addBlog = async newBlog => {
     try {
       const returnedBlog = await create(newBlog, user.token)
@@ -81,7 +66,7 @@ const App = () => {
         })
       )
 
-      setBlogs([...blogs, returnedBlog])
+      setBlogs([...blogs, returnedBlog]) // this mut be store in the redux store abd this entire function must therefore existin within the component that craetes it
     } catch (error) {
       dispatch(displayNotification({ className: 'error', info: error.message }))
     }
@@ -217,15 +202,7 @@ const App = () => {
       </Toggable>
 
       <h2>blogs</h2>
-      <div>
-        {blogs.map(blog => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            {...{ updateBlog, removeBlog, user }}
-          />
-        ))}
-      </div>
+      <BlogList />
     </div>
   )
 }
