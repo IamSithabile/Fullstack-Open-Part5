@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import Blog from './Blog'
-import { initializeBlogs } from '../reducers/blogsReducer'
-import { Link } from 'react-router-dom'
+import Blog from './Blog';
+import { initializeBlogs } from '../reducers/blogsReducer';
+import { Link } from 'react-router-dom';
 
 const BlogList = () => {
-  const blogs = useSelector(state => state.blogs)
-  const dispatch = useDispatch()
+  const blogs = useSelector((state) => state.blogs);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(initializeBlogs())
-  }, [])
+    dispatch(initializeBlogs());
+  }, []);
 
   return (
     <div>
-      {blogs.map(blog => (
+      {blogs.map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}
@@ -23,7 +23,7 @@ const BlogList = () => {
         />
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default BlogList
+export default BlogList;

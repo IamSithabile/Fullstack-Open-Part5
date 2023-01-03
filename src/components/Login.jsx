@@ -1,6 +1,6 @@
-import React from 'react'
-import LoginForm from './LoginForm'
-import Toggable from './Toggable'
+import React from 'react';
+import LoginForm from './LoginForm';
+import Toggable from './Toggable';
 
 const Login = () => {
   return (
@@ -12,7 +12,7 @@ const Login = () => {
         </Toggable>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

@@ -8,6 +8,8 @@ import User from './components/User'
 import BlogItem from './components/BlogItem'
 import Logout from './components/Logout'
 
+import './index.css'
+
 const App = () => {
   const reduxUser = useSelector(state => state.user)
 
@@ -23,7 +25,10 @@ const App = () => {
   }
   return (
     <>
-      <div style={navStyle}>
+      <div
+        className="m-4 p-2 text-gray-300"
+        style={navStyle}
+      >
         <Link to="/users">Users</Link>
         <Link to="/blogs">Blogs</Link>
         <Logout />

@@ -1,19 +1,19 @@
-import React from 'react'
+import React from 'react';
 
-import './Notification.css'
+import './Notification.css';
 
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 
 const Notification = () => {
-  const notification = useSelector(state => state.notification)
-  if (notification === null) return
-  const { info, className = 'success' } = notification
+  const notification = useSelector((state) => state.notification);
+  if (notification === null) return;
+  const { info, className = 'success' } = notification;
 
   return (
     <>
       <div {...{ className }}>{info}</div>
     </>
-  )
-}
+  );
+};
 
-export default Notification
+export default Notification;

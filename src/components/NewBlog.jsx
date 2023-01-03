@@ -1,49 +1,49 @@
-import React, { useState } from 'react'
-import { displayNotification } from '../reducers/notificationReducer'
+import React, { useState } from 'react';
+import { displayNotification } from '../reducers/notificationReducer';
 
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
 
-import { addBlog } from '../reducers/blogsReducer'
+import { addBlog } from '../reducers/blogsReducer';
 
 const NewBlog = () => {
-  const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
-  const [author, setAuthor] = useState('')
-  const [title, setTitle] = useState('')
-  const [url, setUrl] = useState('')
+  const [author, setAuthor] = useState('');
+  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState('');
 
-  const authorHandler = e => {
+  const authorHandler = (e) => {
     const {
       target: { value },
-    } = e
-    setAuthor(value)
-  }
+    } = e;
+    setAuthor(value);
+  };
 
-  const titleHandler = e => {
+  const titleHandler = (e) => {
     const {
       target: { value },
-    } = e
-    setTitle(value)
-  }
+    } = e;
+    setTitle(value);
+  };
 
-  const urlHandler = e => {
+  const urlHandler = (e) => {
     const {
       target: { value },
-    } = e
-    setUrl(value)
-  }
+    } = e;
+    setUrl(value);
+  };
 
-  const formSubmitHandler = e => {
-    e.preventDefault()
+  const formSubmitHandler = (e) => {
+    e.preventDefault();
 
-    const blog = { ...{ title, author, url } }
-    dispatch(addBlog(blog, user.token))
+    const blog = { ...{ title, author, url } };
+    dispatch(addBlog(blog, user.token));
 
-    setAuthor('')
-    setTitle('')
-    setUrl('')
-  }
+    setAuthor('');
+    setTitle('');
+    setUrl('');
+  };
 
   return (
     <>
@@ -82,15 +82,12 @@ const NewBlog = () => {
             id="url"
           />
         </label>
-        <button
-          type="submit"
-          id="create-button"
-        >
+        <button type="submit" id="create-button">
           Create
         </button>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default NewBlog
+export default NewBlog;

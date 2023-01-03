@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const Blog = ({ blog }) => {
-  const [user, setUser] = useState()
+  const [user, setUser] = useState();
   useEffect(() => {
-    const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
+    const loggedInUserJSON = window.localStorage.getItem('loggedInUser');
 
     if (loggedInUserJSON) {
-      const user = JSON.parse(loggedInUserJSON)
-      setUser(user)
+      const user = JSON.parse(loggedInUserJSON);
+      setUser(user);
     }
-  }, [])
+  }, []);
 
-  const { id, title, author } = blog
+  const { id, title, author } = blog;
 
   const blogStyle = {
     paddingTop: 10,
@@ -21,17 +21,14 @@ const Blog = ({ blog }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  }
+  };
 
   return (
-    <div
-      style={blogStyle}
-      className="blogs"
-    >
+    <div style={blogStyle} className="blogs">
       <Link to={`/blogs/${id}`}>{title}</Link>
       <p>{author}</p>
     </div>
-  )
-}
+  );
+};
 
-export default Blog
+export default Blog;

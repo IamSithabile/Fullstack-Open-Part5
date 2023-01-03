@@ -1,34 +1,34 @@
-import React from 'react'
+import React from 'react';
 
-import { useState } from 'react'
-import { loginUser } from '../reducers/userReducer'
+import { useState } from 'react';
+import { loginUser } from '../reducers/userReducer';
 
-import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux';
 
 const LoginForm = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const usernameHandler = e => {
-    setUsername(e.target.value)
-  }
+  const usernameHandler = (e) => {
+    setUsername(e.target.value);
+  };
 
-  const passwordHandler = e => {
-    setPassword(e.target.value)
-  }
+  const passwordHandler = (e) => {
+    setPassword(e.target.value);
+  };
 
-  const formHandler = async e => {
-    e.preventDefault()
+  const formHandler = async (e) => {
+    e.preventDefault();
 
-    const userDetails = { username, password }
+    const userDetails = { username, password };
 
-    dispatch(loginUser(userDetails))
+    dispatch(loginUser(userDetails));
 
-    setUsername('')
-    setPassword('')
-  }
+    setUsername('');
+    setPassword('');
+  };
   return (
     <>
       <form onSubmit={formHandler}>
@@ -53,15 +53,12 @@ const LoginForm = () => {
           />
         </label>
 
-        <button
-          type="submit"
-          id="login-button"
-        >
+        <button type="submit" id="login-button">
           Login
         </button>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

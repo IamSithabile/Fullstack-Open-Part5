@@ -1,6 +1,6 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable no-undef */
-const { defineConfig } = require('cypress')
+const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
   e2e: {
@@ -8,4 +8,4 @@ module.exports = defineConfig({
       // implement node event listeners here
     },
   },
-})
+});
