@@ -3,6 +3,7 @@ import { fetchBlog } from '../reducers/blogReducer'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { updateBlog } from '../reducers/blogsReducer'
+import CommentInput from './CommentInput'
 
 const BlogItem = ({ blogId }) => {
   const dispatch = useDispatch()
@@ -18,7 +19,7 @@ const BlogItem = ({ blogId }) => {
   if (!blog) {
     return <p>Loading...</p>
   }
-  console.log(blog)
+
   return (
     <>
       <h1>{blog.title}</h1>
@@ -40,6 +41,7 @@ const BlogItem = ({ blogId }) => {
       {blog.comments && (
         <>
           <h2>Comments</h2>
+          <CommentInput id={blogId} />
           <ul>
             {blog.comments.map(comment => (
               <li key={comment._id}>{comment.comment}</li>
