@@ -7,8 +7,6 @@ export const getAll = async () => {
 }
 export const getOne = async id => {
   const request = await axios.get(`${baseUrl}/${id}`)
-  console.log(`${baseUrl}/${id}`)
-  console.log(request.data)
   return request.data
 }
 
@@ -20,6 +18,10 @@ export const create = async (blogObject, token) => {
 
 export const update = async (id, updateBlog) => {
   const request = await axios.put(`${baseUrl}/${id}`, updateBlog)
+  return request.data
+}
+export const addComment = async (id, updatedBlog) => {
+  const request = await axios.post(`${baseUrl}/${id}/comments`, updatedBlog)
   return request.data
 }
 
