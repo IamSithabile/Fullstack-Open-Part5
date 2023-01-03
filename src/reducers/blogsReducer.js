@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { create, getAll, remove, update } from '../services/blogs'
+import { create, getAll, getOne, remove, update } from '../services/blogs'
 import { displayNotification } from './notificationReducer'
 
 const sortByLikes = (a, b) => {
