@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
-import { useDispatch } from 'react-redux'
-
-import { updateBlog, removeBlog } from '../reducers/blogsReducer'
+import { Link } from 'react-router-dom'
 
 const Blog = ({ blog }) => {
-  const dispatch = useDispatch()
-
   const [user, setUser] = useState()
   useEffect(() => {
     const loggedInUserJSON = window.localStorage.getItem('loggedInUser')
@@ -17,19 +13,7 @@ const Blog = ({ blog }) => {
     }
   }, [])
 
-  const { id, title, url, author, likes } = blog
-
-  const [show, setShow] = useState(false)
-
-  const removeHandler = async ({ id, author, title }) => {
-    const shouldRemove = window.confirm(
-      `Remove the blog titled  ${title} by ${author} >?`
-    )
-
-    if (shouldRemove) {
-      dispatch(removeBlog(id, author, title))
-    }
-  }
+  const { id, title, author } = blog
 
   const blogStyle = {
     paddingTop: 10,
@@ -39,65 +23,14 @@ const Blog = ({ blog }) => {
     marginBottom: 5,
   }
 
-  if (!show) {
-    return (
-      <div
-        style={blogStyle}
-        className="blogs"
-      >
-        <p>{title}</p>
-        <p>{author}</p>
-        <button
-          onClick={() => {
-            setShow(true)
-          }}
-          id="view"
-        >
-          View
-        </button>
-      </div>
-    )
-  }
   return (
-    <>
-      <div
-        style={blogStyle}
-        className="blogs"
-      >
-        <p>{title}</p>
-        <p>{url}</p>
-        <p>
-          {likes}
-          <button
-            onClick={() => {
-              dispatch(updateBlog(id, blog))
-            }}
-            id="like"
-          >
-            like
-          </button>
-        </p>
-        <p>{author}</p>
-        {blog.user.username === user.username && (
-          <button
-            style={{ backgroundColor: 'red', color: 'white' }}
-            onClick={() => {
-              removeHandler(blog)
-            }}
-            id="remove"
-          >
-            Remove
-          </button>
-        )}
-      </div>
-      <button
-        onClick={() => {
-          setShow(false)
-        }}
-      >
-        Hide
-      </button>
-    </>
+    <div
+      style={blogStyle}
+      className="blogs"
+    >
+      <Link to={`/blogs/${id}`}>{title}</Link>
+      <p>{author}</p>
+    </div>
   )
 }
 
