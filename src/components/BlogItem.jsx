@@ -11,12 +11,14 @@ const BlogItem = ({ blogId }) => {
     dispatch(fetchBlog(blogId))
   }, [])
 
+  useEffect
+
   const blog = useSelector(state => state.blog)
 
   if (!blog) {
     return <p>Loading...</p>
   }
-
+  console.log(blog)
   return (
     <>
       <h1>{blog.title}</h1>
@@ -34,6 +36,17 @@ const BlogItem = ({ blogId }) => {
         </button>
       </p>
       <p>added by {blog.author}</p>
+
+      {blog.comments && (
+        <>
+          <h2>Comments</h2>
+          <ul>
+            {blog.comments.map(comment => (
+              <li key={comment._id}>{comment.comment}</li>
+            ))}
+          </ul>
+        </>
+      )}
     </>
   )
 }
