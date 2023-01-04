@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { displayNotification } from '../reducers/notificationReducer';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -47,11 +46,22 @@ const NewBlog = () => {
 
   return (
     <>
-      <h2>Create new</h2>
-      <form onSubmit={formSubmitHandler}>
-        <label>
-          Title :
+      <h2 className="mb-10 text-center text-3xl font-bold uppercase">
+        Create new
+      </h2>
+      <form
+        className="mb-4 rounded bg-white px-8 pt-6 pb-8 shadow-lg"
+        onSubmit={formSubmitHandler}
+      >
+        <div className="mb-4">
+          <label
+            className="mb-2 block text-2xl font-bold text-gray-700"
+            htmlFor="title"
+          >
+            Title:
+          </label>
           <input
+            className="focus:shadow-outline w-full rounded bg-blue-200 py-4 px-6 leading-tight text-gray-700 placeholder-gray-700 focus:outline-none"
             type="text"
             name="title"
             value={title}
@@ -59,10 +69,16 @@ const NewBlog = () => {
             placeholder="Enter the blog title"
             id="title"
           />
-        </label>
-        <label>
-          Author :
+        </div>
+        <div className="mb-4">
+          <label
+            className="mb-2 block text-2xl font-bold text-gray-700"
+            htmlFor="author"
+          >
+            Author:
+          </label>
           <input
+            className="focus:shadow-outline w-full rounded bg-blue-200 py-4 px-6 leading-tight text-gray-700 placeholder-gray-700 focus:outline-none"
             type="text"
             name="author"
             value={author}
@@ -70,10 +86,16 @@ const NewBlog = () => {
             placeholder="Enter the blog author"
             id="author"
           />
-        </label>
-        <label>
-          Url :
+        </div>
+        <div className="mb-6">
+          <label
+            className="mb-2 block text-2xl font-bold text-gray-700"
+            htmlFor="url"
+          >
+            Url:
+          </label>
           <input
+            className="focus:shadow-outline w-full rounded bg-blue-200 py-4 px-6 leading-tight text-gray-700 placeholder-gray-700 focus:outline-none"
             type="text"
             name="url"
             value={url}
@@ -81,10 +103,16 @@ const NewBlog = () => {
             placeholder="Enter the blog url"
             id="url"
           />
-        </label>
-        <button type="submit" id="create-button">
-          Create
-        </button>
+        </div>
+        <div className="flex items-center justify-between">
+          <button
+            className="focus:shadow-outline rounded-full  bg-blue-500 py-4 px-6 font-bold text-white hover:bg-blue-700 focus:outline-none"
+            type="submit"
+            id="create-button"
+          >
+            Create
+          </button>
+        </div>
       </form>
     </>
   );

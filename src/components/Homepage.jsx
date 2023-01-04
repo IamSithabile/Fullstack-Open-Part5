@@ -10,17 +10,15 @@ const Homepage = () => {
   const blogFormRef = useRef();
 
   return (
-    <div>
+    <div className="p-10">
       <Notification />
 
-      <br />
       <UsersInfo />
-      <br />
+
       <Toggable label="Create new blog" ref={blogFormRef}>
         <NewBlog />
       </Toggable>
 
-      <h2>blogs</h2>
       <BlogList />
     </div>
   );

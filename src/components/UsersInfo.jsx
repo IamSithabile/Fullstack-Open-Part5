@@ -14,17 +14,19 @@ const UsersInfo = () => {
   const users = useSelector((state) => state.users);
 
   return (
-    <>
-      <h2>Users</h2>
+    <div className="mt-40 mb-20 ">
+      <h2 className="mb-10 text-center text-3xl font-bold uppercase">Users</h2>
       <ul>
         {users.map((user) => (
-          <li key={user.id}>
-            <Link to={`/users/${user.id}`}>{user.username}</Link> -{' '}
-            {user.blogs.length}
+          <li className="  text-xl font-bold " key={user.id}>
+            <Link to={`/users/${user.id}`}>
+              {user.username} has
+              {user.blogs.length} {user.blogs.length > 1 ? 'blogs' : 'blog'}
+            </Link>
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 };
 

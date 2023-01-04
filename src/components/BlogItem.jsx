@@ -22,7 +22,7 @@ const BlogItem = ({ blogId }) => {
 
   return (
     <>
-      <h1 className="text-green">{blog.title}</h1>
+      <h1>{blog.title}</h1>
 
       <a>{blog.url}</a>
       <p>

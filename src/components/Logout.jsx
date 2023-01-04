@@ -16,9 +16,13 @@ const Logout = () => {
 
   return (
     <>
-      <div style={{ display: 'flex' }}>
+      <div className="flex flex-row items-center">
         <p>{user.username} logged in</p>
-        <button onClick={logoutHandler} id="logout-button">
+        <button
+          className="focus:shadow-outline ml-8 rounded-full bg-red-500 py-3 px-6 font-bold text-white hover:bg-red-700 focus:outline-none"
+          onClick={logoutHandler}
+          id="logout-button"
+        >
           Logout
         </button>
       </div>

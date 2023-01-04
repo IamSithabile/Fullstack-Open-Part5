@@ -31,31 +31,53 @@ const LoginForm = () => {
   };
   return (
     <>
-      <form onSubmit={formHandler}>
-        <label>
-          Username:
+      <form
+        className="my-4 mx-auto max-w-3xl rounded bg-white px-8 py-10 shadow-xl"
+        onSubmit={formHandler}
+      >
+        <div className="mb-4">
+          <label
+            className="mb-2 block text-start text-2xl font-bold text-gray-700"
+            htmlFor="username"
+          >
+            Username:
+          </label>
           <input
+            className="focus:shadow-outline bg-light-blue-200 w-full rounded-lg bg-blue-200 py-6 px-3 leading-tight text-gray-700 placeholder-gray-700 focus:outline-none"
             type="text"
             name="username"
             value={username}
             onChange={usernameHandler}
+            placeholder="Enter your username"
             id="username"
           />
-        </label>
-        <label>
-          Password:{' '}
+        </div>
+        <div className="mb-6">
+          <label
+            className="mb-2 block text-start text-2xl font-bold text-gray-700"
+            htmlFor="password"
+          >
+            Password:
+          </label>
           <input
+            className="focus:shadow-outline w-full  rounded-lg bg-blue-200  py-6 px-3 leading-tight text-gray-700 placeholder-gray-700 focus:outline-none"
             type="password"
             name="password"
             value={password}
             onChange={passwordHandler}
+            placeholder="Enter your password"
             id="password"
           />
-        </label>
-
-        <button type="submit" id="login-button">
-          Login
-        </button>
+        </div>
+        <div className="flex items-center justify-between">
+          <button
+            className="focus:shadow-outline rounded-full  bg-blue-500 py-3 px-6 font-bold text-white hover:bg-blue-700 focus:outline-none"
+            type="submit"
+            id="login-button"
+          >
+            Login
+          </button>
+        </div>
       </form>
     </>
   );

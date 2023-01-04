@@ -22,6 +22,7 @@ const Toggable = forwardRef((props, refs) => {
     <>
       <div style={{ display: hideWhenVisible }}>
         <button
+          className="focus:shadow-outline rounded-full  bg-blue-500 py-3 px-6 font-bold text-white hover:bg-blue-700 focus:outline-none"
           onClick={() => {
             setVisible(true);
           }}
@@ -33,6 +34,7 @@ const Toggable = forwardRef((props, refs) => {
         {props.children}
         <br />
         <button
+          className="focus:shadow-outline rounded-full  bg-red-500 py-3 px-6 font-bold text-white hover:bg-red-700 focus:outline-none"
           onClick={() => {
             setVisible(false);
           }}

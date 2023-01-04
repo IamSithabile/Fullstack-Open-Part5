@@ -15,18 +15,12 @@ const Blog = ({ blog }) => {
 
   const { id, title, author } = blog;
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  };
-
   return (
-    <div style={blogStyle} className="blogs">
-      <Link to={`/blogs/${id}`}>{title}</Link>
-      <p>{author}</p>
+    <div className="blogs my-6 rounded-2xl p-4 shadow-md shadow-gray-400 hover:shadow-gray-600">
+      <Link className=" text-xl font-semibold" to={`/blogs/${id}`}>
+        {title}
+      </Link>
+      <p className="italic">{author}</p>
     </div>
   );
 };
